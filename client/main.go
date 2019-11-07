@@ -22,8 +22,6 @@ import (
 
 	"github.com/katzenpost/client"
 	"github.com/katzenpost/client/config"
-	"github.com/katzenpost/core/crypto/ecdh"
-	"github.com/katzenpost/core/crypto/rand"
 	"github.com/katzenpost/currency/common"
 	"github.com/ugorji/go/codec"
 )
@@ -48,16 +46,12 @@ func main() {
 		panic(err)
 	}
 
-	// create a client and connect to the mixnet Provider
+	cfg, linkKey := client.AutoRegisterRandomClient(cfg)
 	c, err := client.New(cfg)
 	if err != nil {
 		panic(err)
 	}
 
-	linkKey, err := ecdh.NewKeypair(rand.Reader)
-	if err != nil {
-		panic(err)
-	}
 	session, err := c.NewSession(linkKey)
 	if err != nil {
 		panic(err)
